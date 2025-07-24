@@ -1,44 +1,47 @@
-# 🔢 Live Visitor Counter (Serverless Edition)
+# 🔢 Live Visitor Counter + Analytics Viewer
 
-A cloud-native web app that tracks page visits using AWS Lambda, DynamoDB, and API Gateway — all from a static frontend deployed via Firebase Hosting.
+A cloud-native web app that tracks page visits, stores detailed analytics in DynamoDB, and displays logs via a serverless API and frontend viewer.
 
 ---
 
 ## 🌐 Live Demo
 
-👉 [https://livevisitorcounter.web.app](https://livevisitorcounter.web.app)
+- Visitor Counter: 👉 [https://livevisitorcounter.web.app](https://livevisitorcounter.web.app)
+- Visitor Logs: 👉 [https://livevisitorcounter.web.app/logs.html](https://livevisitorcounter.web.app/logs.html)
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer        | Tech                            |
-|--------------|----------------------------------|
-| Frontend     | HTML, CSS, JavaScript (Vanilla) |
-| Backend      | AWS Lambda (Node.js 18.x)        |
-| Database     | DynamoDB                        |
-| API Gateway  | Public HTTP endpoint             |
-| Hosting      | Firebase Hosting (Free Tier)     |
+| Layer      | Technology                       |
+|------------|----------------------------------|
+| Frontend   | HTML/CSS/JS (Firebase Hosting)   |
+| Backend    | AWS Lambda (Node.js)             |
+| Database   | DynamoDB                         |
+| API Access | API Gateway                      |
+| CI/CD      | Manual Deploy via CLI (Firebase) |
 
 ---
 
 ## 🔄 Architecture
 
-- User visits page → frontend calls AWS API
-- API Gateway triggers Lambda
-- Lambda increments `count` in DynamoDB
-- Response shown in real time on the UI
+- On visit:
+  - `/counter` triggers Lambda to increment a count
+  - Visit metadata is logged to a `visits` table
+- On `logs.html` load:
+  - Fetches `/logs` from API Gateway
+  - Displays analytics in a table
 
 ---
 
 ## 📁 File Structure
 /live-visitor-counter
 ├── index.html
-├── style.css
 ├── script.js
+├── logs.html         
+├── style.css
 ├── firebase.json
 ├── .firebaserc
 └── lambda/
-├── index.js
-├── node_modules/
-└── package.json
+├── incrementVisitorCount/index.js
+└── getVisitorLogs/index.js

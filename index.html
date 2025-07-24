@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Live Visitor Counter</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Welcome!</title>
+    <style>
+      body { font-family: sans-serif; text-align: center; margin-top: 5rem; }
+      h1 { font-size: 2rem; }
+    </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Welcome to My Site</h1>
-      <p>You are visitor number:</p>
-      <h2 id="counter">Loading...</h2>
-    </div>
+    <h1>Welcome to My Site</h1>
+    <p>You are visitor number:</p>
+    <h2 id="counter">Loading...</h2>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script>
+      const apiUrl = "https://lufjwmatb8.execute-api.eu-north-1.amazonaws.com/prod/counter";
 
-    <script src="script.js"></script>
+      fetch(apiUrl)
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById("counter").textContent = data.count;
+        })
+        .catch((err) => {
+          console.error("Error fetching visitor count:", err);
+          document.getElementById("counter").textContent = "Error";
+        });
+    </script>
   </body>
 </html>
