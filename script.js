@@ -1,27 +1,13 @@
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyA7u_MWynUL0532yezX6Nfod3WcRQFcVec",
-  authDomain: "livevisitorcounter.firebaseapp.com",
-  databaseURL: "https://livevisitorcounter-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "livevisitorcounter",
-  storageBucket: "livevisitorcounter.appspot.com",
-  messagingSenderId: "270361104718",
-  appId: "1:270361104718:web:f85ae2af886a11e2ceb1cbf",
-  measurementId: "G-ZJJCSPJWY1"
-};
+const apiUrl = "https://lufjwmatb8.execute-api.eu-north-1.amazonaws.com/prod/counter";
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const counterRef = db.ref("visitorCount");
+document.getElementById("counter").textContent = "Loading...";
 
-// Increment visitor count
-counterRef.transaction((currentCount) => {
-  return (currentCount || 0) + 1;
-});
-
-// Read visitor count and update UI
-counterRef.on("value", (snapshot) => {
-  const count = snapshot.val();
-  document.getElementById("counter").textContent = count;
-});
+fetch(apiUrl)
+  .then((res) => res.json())
+  .then((data) => {
+    document.getElementById("counter").textContent = data.count;
+  })
+  .catch((err) => {
+    console.error("Error fetching visitor count:", err);
+    document.getElementById("counter").textContent = "Error";
+  });
